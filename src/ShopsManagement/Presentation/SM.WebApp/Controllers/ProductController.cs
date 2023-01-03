@@ -1,27 +1,35 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SM.Business.DataServices;
+using SM.Business.DataServices.Interfaces;
 using SM.Business.Models;
 
 namespace SM.WebApp.Controllers
 {
     public class ProductController : Controller
     {
-        // GET: ProductController
-        public ActionResult Index()
+        private readonly IProductService _productService;
+
+        public ProductController(IProductService productService)
         {
-            var products = new List<ProductModel>();
-            products.Add(new ProductModel { Id = 1, Name = "Product 1" });
-            products.Add(new ProductModel { Id = 2, Name = "Product 2" });
-            products.Add(new ProductModel { Id = 3, Name = "Product 3" });
-            products.Add(new ProductModel { Id = 4, Name = "Product 4" });
-            products.Add(new ProductModel { Id = 5, Name = "Product 5" });
-            return View(products);
+            _productService = productService;
         }
 
-        // GET: ProductController/Details/5
-        public ActionResult Details(int id)
+
+        // GET: ProductController
+        public ActionResult Index(string? search)
         {
-            return View();
+            List<ProductModel> products = null;
+
+            if (search == null)
+            {
+                products = _productService.GetAll();
+            } else
+            {
+                products = _productService.GetAll().Where(x => x.Name.ToLower()
+                .Contains(search.Trim().ToLower())).ToList();
+            }
+            return View(products);
         }
 
         // GET: ProductController/Create
@@ -33,10 +41,11 @@ namespace SM.WebApp.Controllers
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ProductModel model)
         {
             try
             {
+                _productService.Add(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -48,16 +57,23 @@ namespace SM.WebApp.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var product = _productService.GetAll().Where(x => x.Id == id).FirstOrDefault();
+
+            return View(product);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(ProductModel model)
         {
             try
             {
+                var product = _productService.GetAll().Where(x => x.Id == model.Id).FirstOrDefault();
+                if (product != null)
+                {
+                    product.Name = model.Name;
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -69,22 +85,8 @@ namespace SM.WebApp.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: ProductController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _productService.Delete(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
