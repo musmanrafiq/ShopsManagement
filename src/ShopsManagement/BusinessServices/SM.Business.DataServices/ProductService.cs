@@ -1,4 +1,4 @@
-﻿using SM.Business.DataServices.Interfaces;
+﻿using SM.Business.Interfaces;
 using SM.Business.Models;
 
 namespace SM.Business.DataServices

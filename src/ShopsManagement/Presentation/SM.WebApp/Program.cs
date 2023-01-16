@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using SM.Business.DataServices;
-using SM.Business.DataServices.Interfaces;
+using SM.Business.Interfaces;
+using SM.Data;
 
 namespace SM.WebApp
 {
@@ -11,6 +13,10 @@ namespace SM.WebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // configure entity framework
+            builder.Services.AddDbContext<StoreManagementDbContext>(
+                options => options.UseSqlServer("Data Source=localhost; Database=SMSystem;Integrated Security=SSPI;TrustServerCertificate=True;"));
 
             // all of the custom configurations
             builder.Services.AddSingleton<IProductService , ProductServicev>();
