@@ -1,6 +1,6 @@
 ﻿using SM.Business.Models;
 
-namespace SM.Business.DataServices.Interfaces
+namespace SM.Business.Interfaces
 {
     public interface IProductService
     {

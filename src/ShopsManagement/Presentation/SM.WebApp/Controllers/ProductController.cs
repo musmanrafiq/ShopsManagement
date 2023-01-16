@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SM.Business.DataServices;
-using SM.Business.DataServices.Interfaces;
+using SM.Business.Interfaces;
 using SM.Business.Models;
 
 namespace SM.WebApp.Controllers
