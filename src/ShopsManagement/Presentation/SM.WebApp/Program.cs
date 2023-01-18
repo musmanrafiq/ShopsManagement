@@ -19,7 +19,7 @@ namespace SM.WebApp
                 options => options.UseSqlServer("Data Source=localhost; Database=SMSystem;Integrated Security=SSPI;TrustServerCertificate=True;"));
 
             // all of the custom configurations
-            builder.Services.AddSingleton<IProductService , ProductServicev>();
+            builder.Services.AddScoped<IProductService , ProductService>();
 
             var app = builder.Build();
 

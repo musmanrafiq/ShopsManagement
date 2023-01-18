@@ -9,14 +9,8 @@ namespace SM.Data
         : base(options)
         {
         }
+
+        // all entities from database as dbsets
         public DbSet<Product> Products { get; set; }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder options)
-        //{
-        //    options.UseSqlServer(() =>
-        //    {
-
-        //    })
-        //}
     }
 }

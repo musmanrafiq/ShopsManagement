@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SM.Business.Interfaces;
 using SM.Business.Models;
 
@@ -18,15 +17,14 @@ namespace SM.WebApp.Controllers
         // GET: ProductController
         public ActionResult Index(string? search)
         {
-            List<ProductModel> products = null;
+            List<ProductModel> products;
 
             if (search == null)
             {
                 products = _productService.GetAll();
             } else
             {
-                products = _productService.GetAll().Where(x => x.Name.ToLower()
-                .Contains(search.Trim().ToLower())).ToList();
+                products = _productService.Search(search);
             }
             return View(products);
         }
@@ -68,11 +66,7 @@ namespace SM.WebApp.Controllers
         {
             try
             {
-                var product = _productService.GetAll().Where(x => x.Id == model.Id).FirstOrDefault();
-                if (product != null)
-                {
-                    product.Name = model.Name;
-                }
+                _productService.Update(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
