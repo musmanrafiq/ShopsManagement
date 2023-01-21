@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Protocols;
 using SM.Business.DataServices;
 using SM.Business.Interfaces;
 using SM.Data;
+using SM.Data.Interfaces;
 
 namespace SM.DependencyInjection
 {
@@ -17,6 +18,9 @@ namespace SM.DependencyInjection
                 options => options.
                 UseSqlServer(configuration.GetConnectionString("DbConnection")));
 
+            // repositories configuration
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            
             // all of the custom configurations
             services.AddScoped<IProductService, ProductService>();
         }
