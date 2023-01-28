@@ -16,7 +16,6 @@ namespace SM.Data
             _context = context;
             _dbSet = context.Set<TEntity>();
         }
-
         public IList<TEntity> GetAll()
         {
             return _dbSet.ToList();
@@ -31,15 +30,17 @@ namespace SM.Data
             if(entity == null)
                 return;
             var dbEntity = _context.Entry(entity);
+
             if(dbEntity.State != EntityState.Deleted)
             {
                 dbEntity.State = EntityState.Deleted;
-            } else
+            } 
+            else
             {
                 _dbSet.Attach(entity);
                 _dbSet.Remove(entity);
-                _context.SaveChanges();
             }
+            _context.SaveChanges();
         }
 
         public void Save(TEntity entity)
@@ -48,13 +49,12 @@ namespace SM.Data
             {
                 _dbSet.Attach(entity);
                 _context.Entry(entity).State = EntityState.Modified;
-                _context.SaveChanges();
             }
             else
             {
                 _dbSet.Add(entity);
-                _context.SaveChanges();
             }
+            _context.SaveChanges();
         }
     }
 }

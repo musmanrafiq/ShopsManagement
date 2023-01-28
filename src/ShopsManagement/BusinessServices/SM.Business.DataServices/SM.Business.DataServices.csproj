@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Repositories\SM.Data\SM.Data.csproj" />
     <ProjectReference Include="..\SM.Business.Interfaces\SM.Business.Interfaces.csproj" />
     <ProjectReference Include="..\SM.Business.Models\SM.Business.Models.csproj" />
