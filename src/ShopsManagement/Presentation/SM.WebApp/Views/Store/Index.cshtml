@@ -24,6 +24,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th>
+             <th>
+                Actions
+            </th>
+            <th>
+                See Products
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -45,6 +51,9 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id})
+            </td>
+            <td>
+                @Html.ActionLink("Products", "Index","Product", new { storeId=item.Id})
             </td>
         </tr>
 }
