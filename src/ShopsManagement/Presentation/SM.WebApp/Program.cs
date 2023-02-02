@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using SM.Business.DataServices;
-using SM.Business.Interfaces;
-using SM.Data;
 using SM.DependencyInjection;
 
 namespace SM.WebApp
@@ -32,6 +28,7 @@ namespace SM.WebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

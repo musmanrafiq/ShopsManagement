@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SM.Business.Interfaces;
 using SM.Business.Models;
 
 namespace SM.WebApp.Controllers
 {
+    [Authorize]
     public class StoreController : Controller
     {
         private readonly IStoreService _storeService;
