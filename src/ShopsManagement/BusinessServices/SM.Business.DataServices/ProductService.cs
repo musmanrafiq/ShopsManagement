@@ -28,7 +28,7 @@ namespace SM.Business.DataServices
                     .Contains(searchTerm));
             }
             var productModels = productsQurable.Select(x => new ProductModel
-            { Id = x.Id, Name = x.Name, Description = x.Description }).ToList();
+            { Id = x.Id, Name = x.Name, Description = x.Description, StoreId = x.StoreId }).ToList();
             return productModels;
         }
 

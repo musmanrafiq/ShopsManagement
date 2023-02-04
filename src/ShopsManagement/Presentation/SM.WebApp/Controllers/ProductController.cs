@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SM.Business.Interfaces;
 using SM.Business.Models;
+using SM.Data.Models;
 
 namespace SM.WebApp.Controllers
 {
@@ -19,13 +20,17 @@ namespace SM.WebApp.Controllers
         // GET: ProductController
         public ActionResult Index(int storeId, string? search = "")
         {
+            ViewBag.StoreId = storeId;
+            ViewBag.SearchTerm = search;
+
             var products = _productService.ProductsForStore(storeId, search);
             return View(products);
         }
 
         // GET: ProductController/Create
-        public ActionResult Create()
+        public ActionResult Create(int? storeId)
         {
+            ViewBag.StoreId = storeId;
             return View();
         }
 
@@ -36,8 +41,10 @@ namespace SM.WebApp.Controllers
         {
             try
             {
+                //todo: need to check if that is useful
+                model.Store = null;
                 _productService.Add(model);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {storeId = model.StoreId});
             }
             catch
             {
@@ -46,7 +53,7 @@ namespace SM.WebApp.Controllers
         }
 
         // GET: ProductController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, int storeId)
         {
             var product = _productService.GetAll().Where(x => x.Id == id).FirstOrDefault();
 
@@ -60,8 +67,9 @@ namespace SM.WebApp.Controllers
         {
             try
             {
+                model.Store = null;
                 _productService.Update(model);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { storeId = model.StoreId });
             }
             catch
             {
@@ -70,10 +78,10 @@ namespace SM.WebApp.Controllers
         }
 
         // GET: ProductController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, int storeId)
         {
             _productService.Delete(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { storeId });
         }
     }
 }

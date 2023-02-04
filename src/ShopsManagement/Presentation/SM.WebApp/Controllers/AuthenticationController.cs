@@ -16,7 +16,11 @@ namespace SM.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            // there will be our logic to compare user from database or any other user provider
+            // here will be our logic to compare user from database or any other user provider
+            if(!(model.Email == "abc@d.com" && model.Password == "123456"))
+            {
+                return RedirectToAction(nameof(Login));
+            }
             try
             {
                 // creating list of claims
@@ -37,6 +41,12 @@ namespace SM.WebApp.Controllers
             catch(Exception exp) {
                 return View(model); 
             }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await this.HttpContext.SignOutAsync();
+            return RedirectToAction(nameof(Login));
         }
     }
 }

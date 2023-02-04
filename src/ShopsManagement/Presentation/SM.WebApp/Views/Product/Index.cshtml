@@ -7,13 +7,14 @@
 <h1>Products</h1>
 
 <div>
-    <form asp-action="Index">
-        <input type="text" name="search" class="form-control" />
+    <form asp-action="Index" method="get">
+        <input type="hidden" name="storeId" value="@ViewBag.StoreId" />
+        <input type="text" name="search" class="form-control" value="@ViewBag.SearchTerm" />
         <input type="submit" value="Search" class="btn btn-primary" />
     </form>
 </div>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-storeId="@ViewBag.StoreId">Add Product</a>
 </p>
 <table class="table">
     <thead>
@@ -43,8 +44,8 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id,storeId = item.StoreId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id, storeId = item.StoreId })
             </td>
         </tr>
 }

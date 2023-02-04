@@ -31,6 +31,7 @@ namespace SM.WebApp.Controllers
         // GET: StoreController/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
