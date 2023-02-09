@@ -4,16 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Products</h1>
+<h2>Store's prodcuts</h2>
 
-<div>
-    <form asp-action="Index" method="get">
+
+<form asp-action="Index" method="get">
+    <div class="input-group mt-5">
         <input type="hidden" name="storeId" value="@ViewBag.StoreId" />
-        <input type="text" name="search" class="form-control" value="@ViewBag.SearchTerm" />
+        <input type="text" placeholder="Search product..." name="search" class="form-control" value="@ViewBag.SearchTerm" />
         <input type="submit" value="Search" class="btn btn-primary" />
-    </form>
-</div>
-<p>
+    </div>
+</form>
+
+<p class="mt-5">
     <a asp-action="Create" asp-route-storeId="@ViewBag.StoreId">Add Product</a>
 </p>
 <table class="table">

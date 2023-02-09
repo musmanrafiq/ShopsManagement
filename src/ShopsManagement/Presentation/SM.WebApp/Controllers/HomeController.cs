@@ -1,34 +1,91 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SM.WebApp.Models;
-using System.Diagnostics;
+using SM.Business.Interfaces;
+using SM.Business.Models;
 
 namespace SM.WebApp.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IStoreService _storeService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IStoreService storeService)
         {
-            _logger = logger;
+            _storeService = storeService;
         }
 
-        public IActionResult Index()
+        // GET: StoreController
+        public ActionResult Index()
+        {
+            var models = _storeService.GetAll();
+            return View(models);
+        }
+
+        // GET: StoreController/Details/5
+        public ActionResult Details(int id)
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        // GET: StoreController/Create
+        public ActionResult Create()
         {
+
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        // POST: StoreController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(StoreModel model)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            try
+            {
+                _storeService.Add(model);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: StoreController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var storeModel = _storeService.GetById(id);
+            return View(storeModel);
+        }
+
+        // POST: StoreController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(StoreModel model)
+        {
+            try
+            {
+                _storeService.Update(model);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: StoreController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                _storeService.Delete(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
