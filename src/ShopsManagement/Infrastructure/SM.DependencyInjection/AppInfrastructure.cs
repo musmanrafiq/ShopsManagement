@@ -7,6 +7,7 @@ using SM.Business.DataServices;
 using SM.Business.Interfaces;
 using SM.Data;
 using SM.Data.Interfaces;
+using SM.DependencyInjection.OptionModels;
 
 namespace SM.DependencyInjection
 {
@@ -37,6 +38,13 @@ namespace SM.DependencyInjection
 
             // automapper configuration
             services.AddAutoMapper(typeof(BusinessEntityMappings));
+
+            // setting up all the option models
+            services.Configure<AccountOption>((option) =>
+            {
+                // configure admin account for login into the system
+                configuration.GetSection("Account").Bind(option);
+            });
         }
     }
 }

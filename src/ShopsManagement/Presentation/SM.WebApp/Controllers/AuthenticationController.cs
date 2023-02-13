@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using SM.DependencyInjection.OptionModels;
 using SM.WebApp.Models;
 using System.Security.Claims;
 
@@ -8,6 +10,12 @@ namespace SM.WebApp.Controllers
 {
     public class AuthenticationController : Controller
     {
+        private readonly AccountOption _adminAccount;
+
+        public AuthenticationController(IOptions<AccountOption> _adminAccountOptions)
+        {
+            _adminAccount = _adminAccountOptions.Value;
+        }
         public IActionResult Login()
         {
             return View();
@@ -17,7 +25,7 @@ namespace SM.WebApp.Controllers
         public async Task<IActionResult> Login(LoginModel model)
         {
             // here will be our logic to compare user from database or any other user provider
-            if(!(model.Email == "abc@d.com" && model.Password == "123456"))
+            if(!(model.Email == _adminAccount.Email && model.Password == _adminAccount.Password))
             {
                 return RedirectToAction(nameof(Login));
             }
