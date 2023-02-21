@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using SM.Business.Interfaces;
 using SM.Business.Models;
 using SM.Data.Models;
@@ -10,10 +11,13 @@ namespace SM.WebApp.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
+        // cache injection
+        private readonly IMemoryCache _memoryCache;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IMemoryCache memoryCache)
         {
             _productService = productService;
+            _memoryCache = memoryCache;
         }
 
 
@@ -23,8 +27,14 @@ namespace SM.WebApp.Controllers
             ViewBag.StoreId = storeId;
             ViewBag.SearchTerm = search;
 
-            var products = _productService.ProductsForStore(storeId, search);
-            return View(products);
+            var productList = _memoryCache.Get<List<ProductModel>>($"Products_{search}");
+            if(productList is null)
+            {
+                productList = _productService.ProductsForStore(storeId, search);
+                _ = _memoryCache.Set<List<ProductModel>>($"Products_{search}", productList);
+            }
+            
+            return View(productList);
         }
 
         // GET: ProductController/Create

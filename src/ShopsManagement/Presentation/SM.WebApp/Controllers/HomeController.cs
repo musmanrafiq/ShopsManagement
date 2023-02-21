@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using SM.Business.Interfaces;
 using SM.Business.Models;
 
@@ -9,17 +10,26 @@ namespace SM.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly IStoreService _storeService;
+        // cache
+        private readonly IMemoryCache _memoryChache;
 
-        public HomeController(IStoreService storeService)
+        public HomeController(IStoreService storeService, IMemoryCache memoryCache)
         {
             _storeService = storeService;
+            _memoryChache = memoryCache;
         }
 
         // GET: StoreController
         public ActionResult Index()
         {
-            var models = _storeService.GetAll();
-            return View(models);
+            var storeList = _memoryChache.Get<List<StoreModel>>("Stores");
+            if(storeList is null)
+            {
+                storeList = _storeService.GetAll();
+                _ = _memoryChache.Set("Stores", storeList);
+
+            }
+            return View(storeList);
         }
 
         // GET: StoreController/Details/5

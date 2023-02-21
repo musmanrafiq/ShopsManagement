@@ -45,6 +45,9 @@ namespace SM.DependencyInjection
                 // configure admin account for login into the system
                 configuration.GetSection("Account").Bind(option);
             });
+
+            // memory cache setup
+            services.AddMemoryCache();
         }
     }
 }
