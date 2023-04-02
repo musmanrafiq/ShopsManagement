@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using SM.Business.Interfaces;
 using SM.Business.Models;
-using SM.Data.Models;
 
 namespace SM.WebApp.Controllers
 {
