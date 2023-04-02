@@ -10,13 +10,18 @@ namespace SM.WebApp.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
+        // store service
+        private readonly IStoreService _storeService;
         // cache injection
         private readonly IMemoryCache _memoryCache;
 
-        public ProductController(IProductService productService, IMemoryCache memoryCache)
+        public ProductController(IProductService productService, 
+            IStoreService storeService,
+            IMemoryCache memoryCache)
         {
             _productService = productService;
             _memoryCache = memoryCache;
+            _storeService = storeService;
         }
 
 
@@ -24,7 +29,8 @@ namespace SM.WebApp.Controllers
         public ActionResult Index(int storeId, string? search = "")
         {
             ViewBag.StoreId = storeId;
-            ViewBag.SearchTerm = search;
+            ViewBag.SearchTerm = search;            
+            ViewBag.StoreName = _storeService.GetStoreNameById(storeId);;
 
             var productList = _memoryCache.Get<List<ProductModel>>($"Products_{search}");
             if(productList is null)
