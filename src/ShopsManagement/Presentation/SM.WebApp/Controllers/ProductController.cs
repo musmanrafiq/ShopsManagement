@@ -32,12 +32,12 @@ namespace SM.WebApp.Controllers
             ViewBag.SearchTerm = search;            
             ViewBag.StoreName = _storeService.GetStoreNameById(storeId);;
 
-            var productList = _memoryCache.Get<List<ProductModel>>($"Products_{search}");
-            if(productList is null)
-            {
-                productList = _productService.ProductsForStore(storeId, search);
-                _ = _memoryCache.Set<List<ProductModel>>($"Products_{search}", productList);
-            }
+            //var productList = _memoryCache.Get<List<ProductModel>>($"Products_{search}");
+            //if(productList is null)
+            //{
+              var  productList = _productService.ProductsForStore(storeId, search);
+              //  _ = _memoryCache.Set<List<ProductModel>>($"Products_{search}", productList);
+            //}
             
             return View(productList);
         }

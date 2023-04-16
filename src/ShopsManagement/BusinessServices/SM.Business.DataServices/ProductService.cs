@@ -25,10 +25,13 @@ namespace SM.Business.DataServices
                 searchTerm = searchTerm.Trim().ToLower();
                 productsQurable = productsQurable.Where(x => x.Name.ToLower()
                     .Contains(searchTerm) || x.Description.ToLower()
+                    .Contains(searchTerm) || x.Location.ToLower()
                     .Contains(searchTerm));
             }
             var productModels = productsQurable.Select(x => new ProductModel
-            { Id = x.Id, Name = x.Name, Description = x.Description, StoreId = x.StoreId }).ToList();
+            { Id = x.Id, Name = x.Name, Description = x.Description, 
+            Location = x.Location,
+                StoreId = x.StoreId }).ToList();
             return productModels;
         }
 

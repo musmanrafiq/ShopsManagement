@@ -22,7 +22,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+             @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -40,7 +40,9 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Name) <div>Its location is 
+                    @Html.DisplayFor(modelItem => item.Location)
+                </div>
             </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
