@@ -30,6 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
+            <th>
+                Images
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -46,6 +49,11 @@
             </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @foreach(var singleImage in item.Artifacts){
+                        <img src="@singleImage.Path" alt="@singleImage.Name" width="150px" />
+                    }
                 </td>
             <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id,storeId = item.StoreId }) |

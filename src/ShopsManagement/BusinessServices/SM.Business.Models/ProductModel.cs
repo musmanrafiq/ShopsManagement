@@ -5,6 +5,7 @@
         public ProductModel()
         {
             Store = new StoreModel();
+            Artifacts = new List<ArtifactModel>();
         }
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -13,5 +14,8 @@
         public string Location { get; set; }
         public int StoreId { get; set; }
         public StoreModel Store { get; set; }
+        public ICollection<ArtifactModel> Artifacts { get; set; }
+
     }
+
 }

@@ -31,7 +31,8 @@ namespace SM.Business.DataServices
             var productModels = productsQurable.Select(x => new ProductModel
             { Id = x.Id, Name = x.Name, Description = x.Description, 
             Location = x.Location,
-                StoreId = x.StoreId }).ToList();
+                StoreId = x.StoreId,
+            Artifacts = x.Artifacts.Select(y=> new ArtifactModel { Id = y.Id, Path = y.Path, Name = y.Name }).ToList()}).ToList();
             return productModels;
         }
 

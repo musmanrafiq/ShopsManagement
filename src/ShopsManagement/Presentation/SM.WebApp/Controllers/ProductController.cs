@@ -3,12 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using SM.Business.Interfaces;
 using SM.Business.Models;
+using System.IO;
 
 namespace SM.WebApp.Controllers
 {
     [Authorize]
     public class ProductController : Controller
     {
+        // hosting environment
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        // product service
         private readonly IProductService _productService;
         // store service
         private readonly IStoreService _storeService;
@@ -17,11 +21,13 @@ namespace SM.WebApp.Controllers
 
         public ProductController(IProductService productService, 
             IStoreService storeService,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            IWebHostEnvironment webHostEnvironment)
         {
             _productService = productService;
             _memoryCache = memoryCache;
             _storeService = storeService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -56,6 +62,28 @@ namespace SM.WebApp.Controllers
         {
             try
             {
+                //get files from the request
+                var files = Request.Form.Files;
+                if (files.Any())
+                {
+
+                    string rootDirectoryPath = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads");
+                    // making sure that Upload folder exists in wwwroot directory
+                    if (!Directory.Exists(rootDirectoryPath))
+                    {
+                        Directory.CreateDirectory(rootDirectoryPath);
+                    }
+                    //var artifactModels = new List<ArtifactModel>();
+                    foreach (var file in files)
+                    {
+                        string fileName = Path.GetFileName(file.FileName);
+                        string newFileNameWithpath = Path.Combine(rootDirectoryPath, fileName);
+                        using FileStream fileStream = new FileStream(newFileNameWithpath, FileMode.Create);
+                        file.CopyTo(fileStream);
+                        var artifactModel = new ArtifactModel { Name = fileName, Path = @$"Uploads/{fileName}"};
+                        model.Artifacts.Add(artifactModel);
+                    }
+                }
                 //todo: need to check if that is useful
                 model.Store = null;
                 _productService.Add(model);

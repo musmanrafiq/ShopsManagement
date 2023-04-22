@@ -13,5 +13,6 @@ namespace SM.Data
         // all entities from database as dbsets
         public DbSet<Product> Products { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<Artifact> Artifacts { get; set; }
     }
 }
