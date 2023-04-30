@@ -53,6 +53,7 @@ namespace SM.WebApp.Controllers
             try
             {
                 _storeService.Add(model);
+                _memoryChache.Remove("Stores");
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -76,6 +77,7 @@ namespace SM.WebApp.Controllers
             try
             {
                 _storeService.Update(model);
+                _memoryChache.Remove("Stores");
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -90,6 +92,7 @@ namespace SM.WebApp.Controllers
             try
             {
                 _storeService.Delete(id);
+                _memoryChache.Remove("Stores");
                 return RedirectToAction(nameof(Index));
             }
             catch
