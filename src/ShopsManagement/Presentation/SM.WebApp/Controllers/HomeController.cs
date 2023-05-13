@@ -13,6 +13,7 @@ namespace SM.WebApp.Controllers
         // cache
         private readonly IMemoryCache _memoryChache;
 
+
         public HomeController(IStoreService storeService, IMemoryCache memoryCache)
         {
             _storeService = storeService;

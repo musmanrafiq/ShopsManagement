@@ -1,4 +1,6 @@
+using SM.Data;
 using SM.DependencyInjection;
+using System;
 
 namespace SM.WebApp
 {
@@ -10,10 +12,15 @@ namespace SM.WebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            // let the razor views complied on save
+            builder.Services.AddMvc().AddRazorRuntimeCompilation();
             // All application DI configurations 
             builder.Services.AppDISetup(builder.Configuration);
 
             var app = builder.Build();
+
+            // check if there is any pending migration then apply on app start
+            app.Services.HandlePendingMigrations();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

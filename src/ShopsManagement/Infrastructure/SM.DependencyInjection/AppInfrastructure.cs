@@ -13,6 +13,21 @@ namespace SM.DependencyInjection
 {
     public static class AppInfrastructure
     {
+        public static void HandlePendingMigrations(this IServiceProvider services)
+        {
+            // create services scope object
+            using (var scope = services.CreateScope())
+            {
+                // pull dbcontext from registered services
+                var dbContext = scope.ServiceProvider.GetRequiredService<StoreManagementDbContext>();
+                // checing if there is any pending migrations in the code
+                if (dbContext.Database.GetPendingMigrations().Any())
+                {
+                    // apply the migrations
+                    dbContext.Database.Migrate();
+                }
+            }
+        }
         public static void AppDISetup(this IServiceCollection services, IConfiguration configuration)
         {
             // configure entity framework
