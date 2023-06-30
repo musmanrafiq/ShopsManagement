@@ -21,8 +21,7 @@
                     <div class="card-text">@item.Description</div>
                     <div class="card-text">Its located at @item.Location</div>
                     @Html.ActionLink("Products", "Index","Product", 
-                    new { storeId=item.Id},
-                    new { @class="btn btn-primary"})
+                    new { storeId=item.Id})
                 <div class="card-footer">
                     @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
                     @Html.ActionLink("Delete", "Delete", new { id=item.Id})

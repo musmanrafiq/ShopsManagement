@@ -1,5 +1,6 @@
 using SM.Data;
 using SM.DependencyInjection;
+using SM.WebApp.Middlewares;
 using System;
 
 namespace SM.WebApp
@@ -16,7 +17,8 @@ namespace SM.WebApp
             builder.Services.AddMvc().AddRazorRuntimeCompilation();
             // All application DI configurations 
             builder.Services.AppDISetup(builder.Configuration);
-
+            // register custom exception middleware here
+            builder.Services.AddTransient<ExceptionMiddleware>();
             var app = builder.Build();
 
             // check if there is any pending migration then apply on app start
@@ -38,6 +40,8 @@ namespace SM.WebApp
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // adding middleware for exception
+            app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

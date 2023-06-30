@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+main {
+    min-height: 670px;
+}
+
+.productImage {
+    height: 50px;
+    padding: 5px;
+}
