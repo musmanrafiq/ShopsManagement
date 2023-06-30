@@ -2,6 +2,7 @@
 using SM.Business.Interfaces;
 using SM.Data.Interfaces;
 using SM.Data.Models;
+using System.Xml;
 
 namespace SM.Business.DataServices
 {
@@ -23,9 +24,18 @@ namespace SM.Business.DataServices
             return allModels;
         }
 
+
+
         public TModel GetById(int id)
         {
             var entity = _repository.Get(x=>x.Id == id).FirstOrDefault();
+            var models = _mapper.Map<TModel>(entity);
+            return models;
+        }
+
+        public TModel GetByIdWithInclude(int id, string include)
+        {
+            var entity = _repository.GetWithInclude(x => x.Id == id, include).FirstOrDefault();
             var models = _mapper.Map<TModel>(entity);
             return models;
         }
@@ -49,6 +59,13 @@ namespace SM.Business.DataServices
             {
                 _repository.Delete(entity);
             }
+        }
+
+        public async Task<List<TModel>> GetIncludedEntitiesAsync(string includeProperties = "")
+        {
+            var allEntity = await _repository.GetIncludedEntitiesAsync(includeProperties: includeProperties);
+            var allModels = _mapper.Map<List<TModel>>(allEntity);
+            return allModels;
         }
     }
 }

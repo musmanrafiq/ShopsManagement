@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SM.Data.Interfaces;
 using SM.Data.Models;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 
@@ -20,10 +21,31 @@ namespace SM.Data
         {
             return _dbSet.ToList();
         }
-        
+        public virtual async Task<IEnumerable<TEntity>> GetIncludedEntitiesAsync(Expression<Func<TEntity, bool>> ?filter = null, 
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> ?orderBy = null, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = _dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+                return await orderBy(query).ToListAsync();
+            else
+                return await query.ToListAsync();
+        }
         public IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbSet.Where(predicate);
+        }
+        public IQueryable<TEntity> GetWithInclude(Expression<Func<TEntity, bool>> predicate, string include)
+        {
+            return _dbSet.Where(predicate).Include(include);
         }
         public void Delete(TEntity entity)
         {
